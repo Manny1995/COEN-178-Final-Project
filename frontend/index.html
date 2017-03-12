@@ -1,0 +1,214 @@
+<!doctype html>
+<html ng-app="GreenField">
+  <head>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+    <!-- Import Angular JS -->
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+
+    <script src="app.js"></script>
+
+  </head>
+
+  <body ng-controller="home" class="background">
+    <!-- Modal -->
+    <div id="modal1" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content modal-lg">
+          <div class="modal-header modal-lg">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title modal-lg" ng-init="queryTitle='Sample Query'">{{ queryTitle }}</h4>
+          </div>
+          <div class="modal-body modal-lg">
+              <table class="table table">
+                <thead id= "tableHeader">
+
+                </thead>
+                <tbody id="tableBody">
+
+                </tbody>
+              </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class = "container">
+      <div class="row">
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-8" id="mainBackground">
+          <div class="card card-bordered">
+            <h3 class="card-title">Query 1</h3>
+            <p class="card-text">Generate a list of rental properties available for a specific branch along with manager name</p>
+            <input style="text" class="form-control" placeholder="Branch name" ng-model="b_name"/>
+            <a class="btn btn-primary" ng-click="query1(b_name)">Generate List</a>
+          </div>
+        </div>
+        <div class="col-md-2">
+        </div>
+      </div>
+
+       <div class="row">
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-8" id="mainBackground">
+          <div class="card card-bordered">
+            <h3 class="card-title">Query 2</h3>
+            <p class="card-text">Generate a list of supervisors and the properties (addresses) they supervise</p>
+            <a class="btn btn-primary" ng-click="query2()">Generate List</a>
+          </div>
+        </div>
+        <div class="col-md-2">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-8">
+          <div class="card card-bordered">
+            <h3 class="card-title">Query 3</h3>
+            <p class="card-text">Generate a list of rental properties by a specific owner (where the owner’s name is entered as input), listed in a GreenField branch (the branch name is input).</p>
+            <input style="text" class="form-control" placeholder="Branch name" ng-model="b_name2"/>
+            <input style="text" class="form-control" placeholder="Owner First Name" ng-model="o_fname"/>
+            <input style="text" class="form-control" placeholder="Owner Last Name" ng-model="o_lname"/>
+            <a class="btn btn-primary" ng-click="query3(b_name2, o_fname, o_lname)">Generate List</a>
+          </div>
+        </div>
+        <div class="col-md-2">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-8">
+          <div class="card card-bordered">
+            <h3 class="card-title">Query 4</h3>
+            <p class="card-text">Show a listing of properties available, where the properties should satisfy the criteria (city, no of rooms and/or range for rent given as input).</p>
+            <input style="text" class="form-control" placeholder="City name" ng-model="city"/>
+            <input style="text" class="form-control" placeholder="Number of rooms" ng-model="rooms"/>
+            <input style="text" class="form-control" placeholder="Lowest Rent" ng-model="lowest"/>
+            <input style="text" class="form-control" placeholder="Highest Rent" ng-model="highest"/>
+            <a class="btn btn-primary" ng-click="query4(city, rooms, lowest, highest)">Generate List</a>
+          </div>
+        </div>
+        <div class="col-md-2">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-8">
+          <div class="card card-bordered">
+            <h3 class="card-title">Query 5</h3>
+            <p class="card-text">Show the number of properties available for rent by branch.</p>
+            <a class="btn btn-primary" ng-click="query5()">Generate List</a>
+          </div>
+        </div>
+        <div class="col-md-2">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-8">
+          <div class="card card-bordered">
+            <h3 class="card-title">Query 6</h3>
+            <p class="card-text">Create a lease agreement (See section 1.1). The information to be entered into this agreement can be input via a Graphical User interface (See section 2.1) or from the command line.</p>
+            <input style="text" class="form-control" placeholder="Property ID" ng-model="m_propertyID"/>
+            <input style="text" class="form-control" placeholder="Client First Name" ng-model="m_firstName"/>
+            <input style="text" class="form-control" placeholder="Client Last Name" ng-model="m_lastName"/>
+            <input style="text" class="form-control" placeholder="Client HomePhone Number" ng-model="m_homePhone"/>
+            <input style="text" class="form-control" placeholder="Client Work Phone Number" ng-model="m_workPhone"/>
+            <input style="text" class="form-control" placeholder="Contact First Name" ng-model="m_contactFirstName"/>
+            <input style="text" class="form-control" placeholder="Contact Last Name" ng-model="m_contactLastName"/>
+            <input style="text" class="form-control" placeholder="Contact Phone" ng-model="m_contactPhone"/>
+            <input style="text" class="form-control" placeholder="Start Date" ng-model="m_startDate"/>
+            <input style="text" class="form-control" placeholder="End Date" ng-model="m_endDate"/>
+          <!--  <input style="text" class="form-control" placeholder="Deposit Amount" ng-model="m_depositAmount"/>
+-->            
+<a class="btn btn-primary" ng-click="query6(m_propertyID, m_firstName, m_lastName, m_homePhone, m_workPhone, m_contactFirstName, m_contactLastName, m_contactPhone, m_startDate, m_endDate, m_contactPhone)">Generate List</a>
+          </div>
+        </div>
+        <div class="col-md-2">
+        </div>
+      </div>
+
+    <div class="row">
+      <div class="col-md-2">
+      </div>
+      <div class="col-md-8">
+        <div class="card card-bordered">
+          <h3 class="card-title">Query 7</h3>
+          <p class="card-text">Show a lease agreement for a renter (name is entered as input).</p>
+          <input style="text" class="form-control" placeholder="Owner First Name" ng-model="r_fname"/>
+          <input style="text" class="form-control" placeholder="Owner Last Name" ng-model="r_lname"/>
+          <a class="btn btn-primary" ng-click="query7(r_fname, r_lname)">Generate List</a>
+        </div>
+      </div>
+      <div class="col-md-2">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-2">
+      </div>
+      <div class="col-md-8">
+        <div class="card card-bordered">
+          <h3 class="card-title">Query 8</h3>
+          <p class="card-text">Show the renters who rented more than one rental property.</p>
+          <a class="btn btn-primary" ng-click="query8()">Generate List</a>
+        </div>
+      </div>
+      <div class="col-md-2">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-2">
+      </div>
+      <div class="col-md-8">
+        <div class="card card-bordered">
+          <h3 class="card-title">Query 9</h3>
+          <p class="card-text">Show the average rent for properties in a town (name of the town is entered as input). You can take the average of all the properties that are rented out (in that town) and those available for rent in that town.</p>
+          <input style="text" class="form-control" placeholder="City Name" ng-model="m_cityName"/>
+          <a class="btn btn-primary" ng-click="query9(m_cityName)">Generate List</a>
+        </div>
+      </div>
+      <div class="col-md-2">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-2">
+      </div>
+      <div class="col-md-8">
+        <div class="card card-bordered">
+          <h3 class="card-title">Query 10</h3>
+          <p class="card-text">1)	 Show the names and addresses of properties whose leases will expire in next two months (from the current date).</p>
+          <a class="btn btn-primary" ng-click="query10()">Generate List</a>
+        </div>
+      </div>
+      <div class="col-md-2">
+      </div>
+    </div>
+  </div>
+  </body>
+</html>

@@ -1,0 +1,478 @@
+setup tables
+
+Table created.
+
+
+Table created.
+
+
+Table created.
+
+
+Table created.
+
+
+Table created.
+
+
+Table created.
+
+
+Table created.
+
+create sequence lease_sequence
+                *
+ERROR at line 1:
+ORA-00955: name is already used by an existing object 
+
+
+add constraints
+
+Trigger created.
+
+No errors.
+
+Trigger created.
+
+No errors.
+
+Trigger created.
+
+No errors.
+
+Trigger created.
+
+No errors.
+
+Trigger created.
+
+No errors.
+insert values
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+add second manager for same branch - constraint: one branch can only have one manager
+insert into branch values (3, 'Other Branch', '4088874946', '10480', 'Whole Foods Lane', 'South Park', '95014', 'm4')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (IAMIRTHA.SYS_C00283971) violated 
+
+
+add second branch for same manager - constraint: one manager manages one branch
+insert into branch values (4, 'Other Branch', '4088874946', '10480', 'Whole Foods Lane', 'South Park', '95014', 'm3')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (IAMIRTHA.SYS_C00283972) violated 
+
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+constraint: a supervisor cannot manage more than three properties
+insert into rentalProperty values ('r4', 'o1', 's1', '9844', 'Washington Ave', 'San Jose', '95243', 2, 250, 'available', date '2016-05-11')
+            *
+ERROR at line 1:
+ORA-20000: Only 3 properties for each supervisor 
+ORA-06512: at "IAMIRTHA.RENTALCONSTRAINT", line 18 
+ORA-04088: error during execution of trigger 'IAMIRTHA.RENTALCONSTRAINT' 
+
+
+
+1 row created.
+
+
+1 row created.
+
+constraint: a lease agreement should be for a minimum of six months and a maximum of one year
+insert into leaseAgreement values (lease_sequence.nextVal, 'r1', 'Craig', 'Tucker', '4086963456', '1234567890', 'Tweek', 'Tweaker', '4327890987', date '2016-1-1', date '2016-6-1', 100, 100)
+*
+ERROR at line 1:
+ORA-02290: check constraint (IAMIRTHA.SYS_C00283983) violated 
+
+
+insert into leaseAgreement values (lease_sequence.nextVal, 'r2', 'Craig', 'Tucker', '4086963456', '1234567890', 'Tweek', 'Tweaker', '4327890987', date '2016-1-1', date '2018-7-1', 430, 430)
+*
+ERROR at line 1:
+ORA-02290: check constraint (IAMIRTHA.SYS_C00283983) violated 
+
+
+constraint: If a lease agreement = 6 month, increase the rent by 1.1
+
+1 row created.
+
+constraint: when a lease agreement is created, the status should be changed to leased
+
+RENTA STATUS                                                                    
+----- ----------                                                                
+r1    available                                                                 
+
+
+1 row created.
+
+
+RENTA STATUS                                                                    
+----- ----------                                                                
+r1    leased                                                                    
+
+When a rental property is removed from the list of rentals, it should also be removed from its supervisor’s list.
+
+RENTA OWNER SUPER STREETNUMB STREETNAME           CITY                 ZIP      
+----- ----- ----- ---------- -------------------- -------------------- -----    
+     ROOMS       RENT STATUS     STARTDATE                                      
+---------- ---------- ---------- ---------                                      
+r2    o2    s1    22         Jump St              Santa Clara          95014    
+         4        430 available  11-OCT-16                                      
+                                                                                
+r5    o3    s1    9844       Washington Ave       San Jose             95243    
+         2        250 available  11-MAY-16                                      
+                                                                                
+r4    o2    s2    233        Alviso St            Cupertino            95014    
+         2        100 available  11-NOV-17                                      
+                                                                                
+
+
+FULLNAME                                                                        
+-----------------------------------------                                       
+ADDRESS                                                                         
+----------------------------------------------------------                      
+PC Principal                                                                    
+22 Jump St Santa Clara 95014                                                    
+                                                                                
+PC Principal                                                                    
+9844 Washington Ave San Jose 95243                                              
+                                                                                
+Stan Marsh                                                                      
+233 Alviso St Cupertino 95014                                                   
+                                                                                
+
+
+1 row updated.
+
+
+RENTA OWNER SUPER STREETNUMB STREETNAME           CITY                 ZIP      
+----- ----- ----- ---------- -------------------- -------------------- -----    
+     ROOMS       RENT STATUS     STARTDATE                                      
+---------- ---------- ---------- ---------                                      
+r2    o2    s1    22         Jump St              Santa Clara          95014    
+         4        430 available  11-OCT-16                                      
+                                                                                
+r5    o3    s1    9844       Washington Ave       San Jose             95243    
+         2        250 available  11-MAY-16                                      
+                                                                                
+
+
+FULLNAME                                                                        
+-----------------------------------------                                       
+ADDRESS                                                                         
+----------------------------------------------------------                      
+PC Principal                                                                    
+22 Jump St Santa Clara 95014                                                    
+                                                                                
+PC Principal                                                                    
+9844 Washington Ave San Jose 95243                                              
+                                                                                
+
+With every new lease, a 10% increase in rent should be added to the rent from the previous lease.
+
+RENTA       RENT                                                                
+----- ----------                                                                
+r5           250                                                                
+
+
+1 row created.
+
+
+RENTA       RENT                                                                
+----- ----------                                                                
+r5           275                                                                
+
+initialize the queries
+
+Function created.
+
+No errors.
+
+Function created.
+
+No errors.
+
+Function created.
+
+No errors.
+
+Function created.
+
+No errors.
+
+Function created.
+
+No errors.
+
+Procedure created.
+
+No errors.
+
+Function created.
+
+No errors.
+
+Function created.
+
+No errors.
+
+Function created.
+
+No errors.
+
+Function created.
+
+No errors.
+Queries
+
+QUERY_1('SODASOPABRA                                                            
+--------------------                                                            
+CURSOR STATEMENT : 1                                                            
+
+CURSOR STATEMENT : 1
+
+ADDRESS                                                                         
+----------------------------------------------------------                      
+FULLNAME                                                                        
+-----------------------------------------                                       
+22 Jump St Santa Clara 95014                                                    
+Butters Stotch                                                                  
+                                                                                
+
+
+
+QUERY_2                                                                         
+--------------------                                                            
+CURSOR STATEMENT : 1                                                            
+
+CURSOR STATEMENT : 1
+
+FULLNAME                                                                        
+-----------------------------------------                                       
+ADDRESS                                                                         
+----------------------------------------------------------                      
+PC Principal                                                                    
+21 Jump St Santa Clara 95014                                                    
+                                                                                
+PC Principal                                                                    
+22 Jump St Santa Clara 95014                                                    
+                                                                                
+Stan Marsh                                                                      
+9842 Washington St Cupertino 95014                                              
+                                                                                
+
+FULLNAME                                                                        
+-----------------------------------------                                       
+ADDRESS                                                                         
+----------------------------------------------------------                      
+PC Principal                                                                    
+9844 Washington Ave San Jose 95243                                              
+                                                                                
+Stan Marsh                                                                      
+233 Alviso St Cupertino 95014                                                   
+                                                                                
+Scott Malkinson                                                                 
+14893 Lafayette Cupertino 95014                                                 
+                                                                                
+
+6 rows selected.
+
+
+
+QUERY_3('SODASOPABRA                                                            
+--------------------                                                            
+CURSOR STATEMENT : 1                                                            
+
+CURSOR STATEMENT : 1
+
+no rows selected
+
+
+
+QUERY_4('SANTACLARA'                                                            
+--------------------                                                            
+CURSOR STATEMENT : 1                                                            
+
+CURSOR STATEMENT : 1
+
+ADDRESS                                                         ROOMS       RENT
+---------------------------------------------------------- ---------- ----------
+21 Jump St Santa Clara 95014                                        4        121
+22 Jump St Santa Clara 95014                                        4        430
+
+
+
+QUERY_5                                                                         
+--------------------                                                            
+CURSOR STATEMENT : 1                                                            
+
+CURSOR STATEMENT : 1
+
+  COUNT(*) BRANCHNUMBER                                                         
+---------- ------------                                                         
+         5            1                                                         
+         1            3                                                         
+
+
+
+PL/SQL procedure successfully completed.
+
+
+QUERY_7('MANNY','AMI                                                            
+--------------------                                                            
+CURSOR STATEMENT : 1                                                            
+
+CURSOR STATEMENT : 1
+
+   LEASEID FULLNAME                                  HOMEPHONE  WORKPHONE       
+---------- ----------------------------------------- ---------- ----------      
+CONTACTNAME                               CONTACTPHO STARTDATE ENDDATE          
+----------------------------------------- ---------- --------- ---------        
+DEPOSITAMOUNT RENTAMOUNT                                                        
+------------- ----------                                                        
+       786 Manny Amirtharaj                          1231231234 1231231234      
+Tyrone Jackson                            1231231234 16-JAN-03 16-SEP-03        
+          420        420                                                        
+                                                                                
+
+
+
+QUERY_8                                                                         
+--------------------                                                            
+CURSOR STATEMENT : 1                                                            
+
+CURSOR STATEMENT : 1
+
+FULLNAME                                                                        
+-----------------------------------------                                       
+Craig Tucker                                                                    
+
+
+
+QUERY_9('SANTACLARA'                                                            
+--------------------                                                            
+CURSOR STATEMENT : 1                                                            
+
+CURSOR STATEMENT : 1
+
+ AVG(RENT) CITY                                                                 
+---------- --------------------                                                 
+     275.5 Santa Clara                                                          
+
+
+
+QUERY_10                                                                        
+--------------------                                                            
+CURSOR STATEMENT : 1                                                            
+
+CURSOR STATEMENT : 1
+
+ADDRESS                                                                         
+----------------------------------------------------------                      
+FULLNAME                                  ENDDATE                               
+----------------------------------------- ---------                             
+21 Jump St Santa Clara 95014                                                    
+Craig Tucker                              01-JUL-16                             
+                                                                                
+9842 Washington St Cupertino 95014                                              
+Craig Tucker                              01-JUL-16                             
+                                                                                
+9844 Washington Ave San Jose 95243                                              
+Craig Tucker                              01-AUG-16                             
+                                                                                
+
+ADDRESS                                                                         
+----------------------------------------------------------                      
+FULLNAME                                  ENDDATE                               
+----------------------------------------- ---------                             
+14893 Lafayette Cupertino 95014                                                 
+Manny Amirtharaj                          16-SEP-03                             
+                                                                                
+
+
+drop tables
+
+Table dropped.
+
+
+Table dropped.
+
+
+Table dropped.
+
+
+Table dropped.
+
+
+Table dropped.
+
+
+Table dropped.
+
+
+Table dropped.
+
