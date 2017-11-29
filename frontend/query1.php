@@ -1,6 +1,6 @@
 <?php
 
-$conn = oci_connect('username','password', '//dbserver.engr.scu.edu/db11g');
+$conn = oci_connect('username','password', '');
 if($conn) {
   $p = $_GET['branchNo'];
  
